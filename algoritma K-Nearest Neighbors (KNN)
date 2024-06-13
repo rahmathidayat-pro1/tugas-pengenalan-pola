@@ -1,0 +1,38 @@
+import numpy as np
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import accuracy_score
+import matplotlib.pyplot as plt
+
+# Data dummy untuk contoh
+from sklearn.datasets import load_iris
+
+# Load dataset iris
+iris = load_iris()
+X = iris.data
+y = iris.target
+
+# Bagi data menjadi data pelatihan dan data pengujian
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+
+# Buat model KNN
+knn = KNeighborsClassifier(n_neighbors=3)
+
+# Latih model
+knn.fit(X_train, y_train)
+
+# Prediksi data pengujian
+y_pred = knn.predict(X_test)
+
+# Evaluasi model
+accuracy = accuracy_score(y_test, y_pred)
+print(f'Akurasi model: {accuracy * 100:.2f}%')
+
+# Plot hasil klasifikasi untuk dua fitur pertama
+plt.figure(figsize=(8, 6))
+plt.scatter(X_test[:, 0], X_test[:, 1], c=y_pred, cmap='viridis', edgecolor='k', s=100)
+plt.title('Hasil Klasifikasi KNN')
+plt.xlabel('Fitur 1')
+plt.ylabel('Fitur 2')
+plt.show()
